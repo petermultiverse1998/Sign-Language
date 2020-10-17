@@ -2,7 +2,7 @@ import pyttsx3
 
 def speak(text):
     voice_id_f = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0'
-    voice_id_m = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_DAVID_11.0'
+    #voice_id_m = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_DAVID_11.0'
     engine = pyttsx3.init()
     engine.setProperty('rate', 108)
     engine.setProperty('volume', 0.9)
