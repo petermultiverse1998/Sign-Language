@@ -1,25 +1,29 @@
-import pyttsx3
+import numpy as np
+import cv2
 
-def speak(text):
-    voice_id_f = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0'
-    voice_id_m = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_DAVID_11.0'
-    engine = pyttsx3.init()
-    engine.setProperty('rate', 108)
-    engine.setProperty('volume', 0.9)
-    engine.setProperty('voice', voice_id_f)
-    engine.say(text)
-    engine.runAndWait()
+def resize(img):
+    (height,width) = img.shape[:2]
+    res = cv2.resize(img,(int(width*2.1),int(height*2.1)),interpolation = cv2.INTER_CUBIC)
+    #cv2.imwrite(res,'result.png')
+    return res
 
-def voices():
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-    for voice in voices:  
-        print("Voice:") 
-        print("ID: %s" %voice.id) 
-        print("Name: %s" %voice.name) 
-        print("Age: %s" %voice.age) 
-        print("Gender: %s" %voice.gender) 
-        print("Languages Known: %s" %voice.languages) 
+########### MAIN ############
+cap = cv2.VideoCapture('perfect.mp4')
+fgbg = cv2.createBackgroundSubtractorMOG2()
+if cap.isOpened()==False :
+    print("Error opening video  file")
+
+while cap.isOpened():
+    ret,frame = cap.read()
+    if ret==True:
+        fgmask = fgbg.apply(frame)
+        cv2.imshow('fgmask',fgmask)
+        if cv2.waitKey(25) & 0xFF == 27:
+            break
+        elif cv2.waitKey(25) & 0xFF == ord('s'):
+            cv2.imwrite('peter.png',frame)
+    else:
+        break
     
-speak('I am peter multiverse')
-voices()
+cap.release()
+cv2.destroyAllWindows()
